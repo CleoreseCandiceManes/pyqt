@@ -1,6 +1,7 @@
 from datetime import datetime
+from functools import partial
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from appointments_window import Ui_MainWindow
 from backend.appointments import AppointmentsBE
@@ -15,6 +16,8 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
       while collapsed)
     - page switching: each nav button shows its matching page in the
       contentArea's QStackedWidget (contentStack)
+    - populating the dashboard's two appointments tables from AppointmentsBE,
+      and adding new appointments via the Client_name / dateTimeEdit / Add form
     """
 
     SIDEBAR_EXPANDED_WIDTH = 200
@@ -43,6 +46,13 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         "settingsButton": "settingsPage",
     }
 
+    # objectNames of the two appointments tables in dashboardPage.
+    ALL_APPOINTMENTS_TABLE = "appointments_table"
+    TODAY_APPOINTMENTS_TABLE = "todays_appointments_table"
+
+    # objectName of the client-name field in the "Add Appointment" form.
+    CLIENT_NAME_FIELD = "Client_name"
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
@@ -59,14 +69,32 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
             page = getattr(self.ui, page_name)
             button.clicked.connect(lambda _checked=False, p=page: self.show_page(p))
 
+        self.ui.add_appointment_btn.clicked.connect(self._on_add_appointment)
+
         self.load_appointments()
 
     def show_page(self, page):
         self.ui.contentStack.setCurrentWidget(page)
 
+    @property
+    def all_appointments_table(self):
+        return getattr(self.ui, self.ALL_APPOINTMENTS_TABLE)
+
+    @property
+    def todays_appointments_table(self):
+        return getattr(self.ui, self.TODAY_APPOINTMENTS_TABLE)
+
+    @property
+    def client_name_field(self):
+        return getattr(self.ui, self.CLIENT_NAME_FIELD)
+
     def load_appointments(self):
-        """Fetch meetings from the backend, sort them chronologically, and
-        render them as HTML in the dashboard's Appointments_listed browser."""
+        """Fetch meetings from the backend and populate both dashboard
+        tables: appointments_table gets everything, todays_appointments_table
+        gets only meetings dated today. Both render Name / Date / Time / a
+        Cancel-or-Undo button per row, and cancelled meetings stay in the
+        list but render with strike-through text.
+        """
         meetings = self.appointments_be.get_meetings()
 
         def sort_key(meeting):
@@ -75,27 +103,128 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
                 "%d-%m-%Y %H:%M",
             )
 
-        meetings = sorted(meetings, key=sort_key)
+        all_meetings = sorted(meetings, key=sort_key)
 
-        if not meetings:
-            self.ui.Appointments_listed.setHtml(
-                "<p style='color:#888;'>No upcoming appointments.</p>"
+        today = datetime.today().date()
+        todays_meetings = [
+            meeting
+            for meeting in all_meetings
+            if datetime.strptime(meeting["appointment_date"], "%d-%m-%Y").date() == today
+        ]
+
+        self._render_table(self.todays_appointments_table, todays_meetings)
+        self._render_table(self.all_appointments_table, all_meetings)
+
+    def _render_table(self, table, meetings):
+        table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        table.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        table.verticalHeader().setVisible(False)
+        table.setShowGrid(False)
+        table.setStyleSheet(
+            "QTableWidget {"
+            " border: 1px solid #E8E3E0;"
+            " border-radius: 10px;"
+            " background-color: #FFFFFF;"
+            "}"
+            "QTableWidget::item {"
+            " padding: 10px;"
+            " border-bottom: 1px solid #F1EEEC;"
+            "}"
+            "QHeaderView::section {"
+            " background-color: #FFFFFF;"
+            " color: #888888;"
+            " border: none;"
+            " border-bottom: 1px solid #E8E3E0;"
+            " padding: 8px;"
+            " font-weight: 600;"
+            "}"
+        )
+
+        table.setColumnCount(4)
+        table.setHorizontalHeaderLabels(["Name", "Date", "Time", ""])
+        table.setRowCount(len(meetings))
+
+        header = table.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        # Fixed rather than ResizeToContents: a cell *widget's* size hint
+        # isn't always picked up in time, which left the Cancel/Undo button
+        # clipped at the table's right edge.
+        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Fixed)
+        table.setColumnWidth(3, 70)
+
+        for row, meeting in enumerate(meetings):
+            cancelled = meeting.get("cancelled", False)
+
+            name_item = QtWidgets.QTableWidgetItem(meeting["name"])
+            date_item = QtWidgets.QTableWidgetItem(meeting["appointment_date"])
+            time_item = QtWidgets.QTableWidgetItem(meeting["appointment_time"])
+
+            if cancelled:
+                font = QtGui.QFont(name_item.font())
+                font.setStrikeOut(True)
+                for item in (name_item, date_item, time_item):
+                    item.setFont(font)
+                    item.setForeground(QtGui.QColor("#A8A29D"))
+
+            table.setItem(row, 0, name_item)
+            table.setItem(row, 1, date_item)
+            table.setItem(row, 2, time_item)
+
+            button = QtWidgets.QPushButton("Undo" if cancelled else "Cancel")
+            button.setCursor(QtCore.Qt.PointingHandCursor)
+            button.setFlat(True)
+            button.setStyleSheet(
+                "QPushButton {{"
+                " border: none;"
+                " background: transparent;"
+                " color: {color};"
+                " font-weight: 600;"
+                " font-size: 12px;"
+                "}}"
+                "QPushButton:hover {{ text-decoration: underline; }}".format(
+                    color="#5B8A72" if cancelled else "#B23B3B"
+                )
+            )
+            button.clicked.connect(
+                partial(self._on_cancel_toggle, meeting["id"], cancelled)
+            )
+            table.setCellWidget(row, 3, button)
+
+    def _on_cancel_toggle(self, meeting_id, currently_cancelled):
+        if currently_cancelled:
+            self.appointments_be.restore_meeting(meeting_id)
+        else:
+            self.appointments_be.cancel_meeting(meeting_id)
+        # Rebuilding the tables replaces (and deletes) the very button
+        # that's still mid-click; deferring one tick lets that click event
+        # finish first, which avoids a stale repaint of the old button
+        # underneath the new one.
+        QtCore.QTimer.singleShot(0, self.load_appointments)
+
+    def _on_add_appointment(self):
+        name = self.client_name_field.text().strip()
+        if not name:
+            QtWidgets.QMessageBox.warning(
+                self, "Missing client name", "Enter a client name before adding an appointment."
             )
             return
 
-        rows = []
-        for meeting in meetings:
-            rows.append(
-                "<p style='margin:4px 0;'>"
-                "<b>{name}</b> &mdash; {date} at {time}"
-                "</p>".format(
-                    name=meeting["name"],
-                    date=meeting["appointment_date"],
-                    time=meeting["appointment_time"],
-                )
-            )
+        appointment_dt = self.ui.dateTimeEdit.dateTime()
+        date_str = appointment_dt.toString("dd-MM-yyyy")
+        time_str = appointment_dt.toString("HH:mm")
 
-        self.ui.Appointments_listed.setHtml("".join(rows))
+        # AppointmentsBE.add_meeting keys each meeting by date + last name;
+        # derive a last name from whatever was typed (last word, or the
+        # whole name if it's a single word) since the form only has one
+        # name field.
+        last_name = name.split()[-1] if name.split() else name
+
+        self.appointments_be.add_meeting(last_name, name, date_str, time_str)
+
+        self.client_name_field.clear()
+        self.load_appointments()
 
     def toggle_sidebar(self):
         is_expanded = self.ui.sidebar.width() > 100

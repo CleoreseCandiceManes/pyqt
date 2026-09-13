@@ -320,13 +320,20 @@ QFrame#contentArea {
         <widget class="QStackedWidget" name="contentStack">
          <property name="styleSheet">
           <string notr="true">QStackedWidget{
-	selection-background-color: rgb(206, 206, 206);
+	background-color: #F5F5F5;
+	border-radius: 20px;
 }</string>
          </property>
          <property name="currentIndex">
           <number>0</number>
          </property>
          <widget class="QWidget" name="dashboardPage">
+          <property name="styleSheet">
+           <string notr="true">QWidget{
+	background-color: #F5F5F5;
+	border-radius: 20px;
+}</string>
+          </property>
           <layout class="QVBoxLayout" name="dashboardPageLayout">
            <property name="leftMargin">
             <number>0</number>
@@ -372,7 +379,10 @@ QLabel {
             </widget>
            </item>
            <item>
-            <widget class="QTextBrowser" name="Appointments_listed"/>
+            <widget class="QTableWidget" name="todays_appointments_table"/>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="appointments_table"/>
            </item>
            <item>
             <spacer name="dashboardSpacer">
@@ -387,9 +397,34 @@ QLabel {
              </property>
             </spacer>
            </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>Add Appointments</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="Client_name"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="add_appointment_btn">
+             <property name="text">
+              <string>Add Appointment</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="calendarPage">
+          <property name="styleSheet">
+           <string notr="true">QStackedWidget{
+	background-color: #F5F5F5;
+}</string>
+          </property>
           <layout class="QVBoxLayout" name="calendarPageLayout">
            <property name="leftMargin">
             <number>0</number>

@@ -1,0 +1,1 @@
+pyuic5 -x lyt_realestate.ui -o lyt_realestate.py

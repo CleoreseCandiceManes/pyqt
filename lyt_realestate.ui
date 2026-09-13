@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
-    <height>741</height>
+    <width>1680</width>
+    <height>939</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,7 +60,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" alignment="Qt::AlignCenter">
+      <item row="0" column="0">
        <widget class="QFrame" name="frame_2">
         <property name="minimumSize">
          <size>
@@ -93,6 +93,9 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QVBoxLayout" name="cardLayout">
+         <property name="spacing">
+          <number>20</number>
+         </property>
          <property name="leftMargin">
           <number>40</number>
          </property>
@@ -104,9 +107,6 @@
          </property>
          <property name="bottomMargin">
           <number>40</number>
-         </property>
-         <property name="spacing">
-          <number>20</number>
          </property>
          <item>
           <widget class="QTextBrowser" name="login_label">
@@ -151,8 +151,18 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QLineEdit" name="username_txt">
-           <property name="minimumHeight">
-            <number>56</number>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>55</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{	
+	background-color: rgb(159, 159, 159);
+	border: none;
+	border-radius: 20
+}</string>
            </property>
            <property name="placeholderText">
             <string>Username</string>
@@ -161,8 +171,12 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QLineEdit" name="password_txt">
-           <property name="minimumHeight">
-            <number>56</number>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{	
+	background-color: rgb(159, 159, 159);
+	border: none;
+	border-radius: 20
+}</string>
            </property>
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
@@ -174,9 +188,6 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QPushButton" name="login_btn">
-           <property name="minimumHeight">
-            <number>56</number>
-           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton {
     background-color: #555555;
