@@ -1,0 +1,20 @@
+# Virtual environments
+.venv/
+venv/
+env/
+.env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE files
+.vscode/
+.idea/
+
+# Qt Designer temporary files
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
