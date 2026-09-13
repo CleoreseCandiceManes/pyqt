@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/images">
+    <file>assests/lyt_icon.png</file>
+    <file>assests/RooflineMonogram@2x.png</file>
+    <file>assests/Main@2x_.png</file>
+    <file>assests/lty_background.png</file>
+  </qresource>
+</RCC>

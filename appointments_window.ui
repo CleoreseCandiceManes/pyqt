@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1398</width>
+    <height>793</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LYT Real Estate</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="sidebar">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+QFrame#sidebar {
+    background-color: #555555;
+    border: none;
+}
+       </string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <layout class="QVBoxLayout" name="sidebarLayout">
+       <property name="leftMargin">
+        <number>15</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>15</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="menuButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#menuButton {
+    font-size: 22px;
+    text-align: center;
+}</string>
+         </property>
+         <property name="text">
+          <string>☰  Menu</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="dashboardButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Dashboard</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="calendarButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Calendar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="propertiesButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Properties</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="clientsButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Clients</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="salesButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Sales</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="settingsButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>45</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: transparent;
+    color: white;
+    border: none;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+QPushButton:hover {
+    background-color: rgba(255, 255, 255, 30);
+}
+
+QPushButton:pressed {
+    background-color: rgba(255, 255, 255, 50);
+}</string>
+         </property>
+         <property name="text">
+          <string>Settings</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="contentArea">
+      <property name="styleSheet">
+       <string notr="true">
+QFrame#contentArea {
+	background-image: url(:/images/assests/lty_background.png);
+	radius: 20;
+    border: none;
+}
+       </string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <layout class="QVBoxLayout" name="contentLayout">
+       <property name="leftMargin">
+        <number>40</number>
+       </property>
+       <property name="topMargin">
+        <number>30</number>
+       </property>
+       <property name="rightMargin">
+        <number>40</number>
+       </property>
+       <property name="bottomMargin">
+        <number>30</number>
+       </property>
+       <item>
+        <widget class="QStackedWidget" name="contentStack">
+         <property name="styleSheet">
+          <string notr="true">QStackedWidget{
+	selection-background-color: rgb(206, 206, 206);
+}</string>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="dashboardPage">
+          <layout class="QVBoxLayout" name="dashboardPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="pageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Today's Appointments</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="dateLabel">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>12 September 2026</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="Appointments_listed"/>
+           </item>
+           <item>
+            <spacer name="dashboardSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="calendarPage">
+          <layout class="QVBoxLayout" name="calendarPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="calendarPageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Calendar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="calendarPageSubtitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Book appointments and property viewings.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCalendarWidget" name="calendarWidget"/>
+           </item>
+           <item>
+            <spacer name="calendarSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="propertiesPage">
+          <layout class="QVBoxLayout" name="propertiesPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="propertiesPageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Properties</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="propertiesPageSubtitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Add, view, and manage property listings.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="propertiesSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="clientsPage">
+          <layout class="QVBoxLayout" name="clientsPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="clientsPageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Clients</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="clientsPageSubtitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Add, view, and remove clients.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="clientsSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="salesPage">
+          <layout class="QVBoxLayout" name="salesPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="salesPageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Sales</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="salesPageSubtitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Track deals and closed sales.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="salesSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="settingsPage">
+          <layout class="QVBoxLayout" name="settingsPageLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="settingsPageTitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 28px;
+    font-weight: bold;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Settings</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="settingsPageSubtitle">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #888888;
+    font-size: 15px;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Application settings.</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="settingsSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
