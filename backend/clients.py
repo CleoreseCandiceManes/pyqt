@@ -5,14 +5,9 @@ from PyQt5.QtCore import QObject
 
 
 class ClientsBE(QObject):
-    """Persists client records to clients.xml, next to this module - same
-    approach as AppointmentsBE: every add writes the whole file back out
-    immediately."""
 
     XML_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "clients.xml")
 
-    # The fields every client record has, shared by the load and save
-    # methods instead of listing the same field names in both.
     FIELDS = (
         "first_name",
         "last_name",
@@ -29,9 +24,6 @@ class ClientsBE(QObject):
         self.clients = self._load_from_xml()
 
     def _load_from_xml(self):
-        """Load clients from clients.xml next to this file. Unlike
-        appointments, there's no seed data - if the file doesn't exist yet,
-        start with an empty client list (it's created on the first save)."""
         if not os.path.exists(self.XML_PATH):
             return {}
 
@@ -47,7 +39,6 @@ class ClientsBE(QObject):
         return clients
 
     def _save_to_xml(self):
-        """Write self.clients back out to clients.xml in full."""
         root = ET.Element("clients")
         for client_id, client in self.clients.items():
             client_el = ET.SubElement(root, "client", {"id": client_id})
@@ -59,8 +50,6 @@ class ClientsBE(QObject):
         tree.write(self.XML_PATH, encoding="utf-8", xml_declaration=True)
 
     def get_clients(self):
-        """Return the saved clients as a list of dicts, each including its
-        id."""
         clients = []
         for client_id, client in self.clients.items():
             entry = dict(client)
@@ -69,7 +58,6 @@ class ClientsBE(QObject):
         return clients
 
     def remove_client(self, client_id):
-        """Delete a client record and persist the change immediately."""
         if client_id in self.clients:
             del self.clients[client_id]
             self._save_to_xml()
@@ -81,11 +69,6 @@ class ClientsBE(QObject):
         )
 
     def ensure_clients_from_names(self, full_names):
-        """Given full names (e.g. from existing appointments), add a bare
-        client record - just first/last name, everything else blank - for
-        any name not already in the client list. Safe to call on every
-        startup: names already known as clients are skipped, so nothing
-        gets duplicated."""
         added = []
         for full_name in full_names:
             parts = full_name.split()
@@ -119,8 +102,6 @@ class ClientsBE(QObject):
         interested_property,
         notes,
     ):
-        """Add a new client record and persist it to clients.xml
-        immediately. Returns the new client's id."""
         client_id = self._unique_key(first_name, last_name)
         self.clients[client_id] = {
             "first_name": first_name,

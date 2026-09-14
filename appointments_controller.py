@@ -9,27 +9,11 @@ from backend.clients import ClientsBE
 
 
 class AppointmentsWindow(QtWidgets.QMainWindow):
-    """Main dashboard window: sidebar nav + content area.
-
-    Wraps the Designer-generated Ui_MainWindow and adds:
-    - the collapsible sidebar behaviour (burger-menu button animates the
-      sidebar width and swaps the nav button labels for icon-only text
-      while collapsed)
-    - page switching: each nav button shows its matching page in the
-      contentArea's QStackedWidget (contentStack)
-    - populating the dashboard's two appointments tables from AppointmentsBE,
-      and adding new appointments via the client_name_combo / dateTimeEdit /
-      Add form (client_name_combo lists every known client, from ClientsBE)
-    - saving new clients via ClientsBE, from the "Add Client" tab's form, and
-      listing them in client_list on the "View Clients" tab
-    """
 
     SIDEBAR_EXPANDED_WIDTH = 200
     SIDEBAR_COLLAPSED_WIDTH = 60
     ANIMATION_DURATION_MS = 250
 
-    # objectName -> label shown when the sidebar is expanded. Cleared to ""
-    # when collapsed. Update this if buttons are added/renamed in Designer.
     NAV_BUTTON_LABELS = {
         "dashboardButton": "Dashboard",
         "calendarButton": "Calendar",
@@ -39,8 +23,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         "settingsButton": "Settings",
     }
 
-    # objectName of the nav button -> objectName of the page it shows in
-    # contentStack. Update this if pages are added/renamed in Designer.
     NAV_BUTTON_PAGES = {
         "dashboardButton": "dashboardPage",
         "calendarButton": "calendarPage",
@@ -50,7 +32,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         "settingsButton": "settingsPage",
     }
 
-    # objectNames of the two appointments tables in dashboardPage.
     ALL_APPOINTMENTS_TABLE = "appointments_table"
     TODAY_APPOINTMENTS_TABLE = "todays_appointments_table"
 
@@ -63,10 +44,7 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
 
         self.appointments_be = AppointmentsBE()
         self.clients_be = ClientsBE()
-        # Backfill: any client who only exists as an appointment so far
-        # (the original seed data) gets a bare client record too, so they
-        # show up in client_name_combo/client_list. Already-known names are
-        # skipped, so this is a no-op on every startup after the first.
+
         self.clients_be.ensure_clients_from_names(
             meeting["name"] for meeting in self.appointments_be.get_meetings()
         )
@@ -94,13 +72,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         self.ui.contentStack.setCurrentWidget(page)
 
     def _ui_widget(self, constant_name, object_name):
-        # Plain getattr() here would raise AttributeError *inside* a
-        # property, which Python then re-raises as if the property itself
-        # doesn't exist ("AppointmentsWindow has no attribute X") - a
-        # confusing error that hides the real cause (a widget rename in
-        # Designer not matching this constant). Looking it up with a
-        # default and raising explicitly instead gives a traceback that
-        # actually says what's wrong.
         widget = getattr(self.ui, object_name, None)
         if widget is None:
             raise RuntimeError(
@@ -121,12 +92,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         return self._ui_widget("TODAY_APPOINTMENTS_TABLE", self.TODAY_APPOINTMENTS_TABLE)
 
     def load_appointments(self):
-        """Fetch meetings from the backend and populate both dashboard
-        tables: appointments_table gets everything, todays_appointments_table
-        gets only meetings dated today. Both render Name / Date / Time / a
-        Cancel-or-Undo button per row, and cancelled meetings stay in the
-        list but render with strike-through text.
-        """
         meetings = self.appointments_be.get_meetings()
 
         def sort_key(meeting):
@@ -151,13 +116,9 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         self._show_appointments_for_date(self.ui.calendarWidget.selectedDate())
 
     def _refresh_calendar_marks(self):
-        """Bold/color every date on calendarWidget that has an active
-        (non-cancelled) appointment, so they stand out at a glance."""
         calendar = self.ui.calendarWidget
         plain_format = QtGui.QTextCharFormat()
 
-        # QCalendarWidget has no "clear all formatting" call, so reset just
-        # the dates we marked last time before applying the new set.
         for date in self._marked_dates:
             calendar.setDateTextFormat(date, plain_format)
 
@@ -182,8 +143,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         self._show_appointments_for_date(qdate)
 
     def _show_appointments_for_date(self, qdate):
-        """Populate day_appointments_table with every appointment (including
-        cancelled ones, struck through) on the given date."""
         date_str = qdate.toString("dd-MM-yyyy")
         meetings = sorted(
             (m for m in self.appointments_be.get_meetings() if m["appointment_date"] == date_str),
@@ -241,10 +200,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         self._selected_calendar_date = qdate
 
     def _on_add_appointment_on_date(self):
-        """"Add Appointment on This Date": jump to the existing Add
-        Appointment form on the dashboard with its date pre-filled, rather
-        than duplicating that form here - client + time are still picked
-        there."""
         qdate = getattr(self, "_selected_calendar_date", None) or self.ui.calendarWidget.selectedDate()
         current_time = self.ui.dateTimeEdit.time()
         self.ui.dateTimeEdit.setDate(qdate)
@@ -284,9 +239,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        # Fixed rather than ResizeToContents: a cell *widget's* size hint
-        # isn't always picked up in time, which left the Cancel/Undo button
-        # clipped at the table's right edge.
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Fixed)
         table.setColumnWidth(3, 70)
 
@@ -333,10 +285,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
             self.appointments_be.restore_meeting(meeting_id)
         else:
             self.appointments_be.cancel_meeting(meeting_id)
-        # Rebuilding the tables replaces (and deletes) the very button
-        # that's still mid-click; deferring one tick lets that click event
-        # finish first, which avoids a stale repaint of the old button
-        # underneath the new one.
         QtCore.QTimer.singleShot(0, self.load_appointments)
 
     def _on_add_appointment(self):
@@ -351,9 +299,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         date_str = appointment_dt.toString("dd-MM-yyyy")
         time_str = appointment_dt.toString("HH:mm")
 
-        # AppointmentsBE.add_meeting keys each meeting by date + last name;
-        # derive a last name from the selected client (last word, or the
-        # whole name if it's a single word) since it's stored as one string.
         last_name = name.split()[-1] if name.split() else name
 
         self.appointments_be.add_meeting(last_name, name, date_str, time_str)
@@ -387,8 +332,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         self.load_clients()
 
     def load_clients(self):
-        """Refresh everything that lists saved clients: client_list (View
-        Clients tab) and client_name_combo (Add Appointment form)."""
         clients = self.clients_be.get_clients()
         self._render_client_table(clients)
         self._populate_client_combo(clients)
@@ -420,11 +363,8 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
             "}"
         )
 
-        # Shorter labels than the add-client form's ("Owned Property" ->
-        # "Owned") so the columns stay readable without truncating - the
-        # Clients context already makes "Owned"/"Interested" unambiguous.
         headers = ["Name", "Email", "Phone", "Type", "Owned", "Interested", "Notes", ""]
-        column_widths = [150, 160, 100, 70, 80, 120]  # all but Notes (stretches) and Remove (fixed)
+        column_widths = [150, 160, 100, 70, 80, 120]
         table.setColumnCount(len(headers))
         table.setHorizontalHeaderLabels(headers)
         table.setRowCount(len(clients))
@@ -436,10 +376,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
         notes_col = len(headers) - 2
         remove_col = len(headers) - 1
         header.setSectionResizeMode(notes_col, QtWidgets.QHeaderView.Stretch)
-        # Fixed rather than ResizeToContents: a cell *widget's* size hint
-        # isn't always picked up in time, which left the Remove button
-        # clipped at the table's right edge (same issue hit on the
-        # appointments tables' Cancel/Undo column).
         header.setSectionResizeMode(remove_col, QtWidgets.QHeaderView.Fixed)
         table.setColumnWidth(remove_col, 80)
 
@@ -487,9 +423,6 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
             return
 
         self.clients_be.remove_client(client_id)
-        # Same reason as _on_cancel_toggle: rebuilding the table replaces
-        # (and deletes) the very button that's still mid-click, so defer a
-        # tick to avoid a stale repaint of the old button underneath.
         QtCore.QTimer.singleShot(0, self.load_clients)
 
     def _populate_client_combo(self, clients):
@@ -523,14 +456,11 @@ class AppointmentsWindow(QtWidgets.QMainWindow):
             self.SIDEBAR_COLLAPSED_WIDTH if is_expanded else self.SIDEBAR_EXPANDED_WIDTH
         )
 
-        # Kept as an instance attribute so it isn't garbage-collected mid-animation.
         self._sidebar_animation = QtCore.QVariantAnimation(self)
         self._sidebar_animation.setDuration(self.ANIMATION_DURATION_MS)
         self._sidebar_animation.setStartValue(self.ui.sidebar.width())
         self._sidebar_animation.setEndValue(new_width)
         self._sidebar_animation.setEasingCurve(QtCore.QEasingCurve.InOutCubic)
-        # setFixedWidth pins both min and max together each frame, so the
-        # frame actually resizes regardless of the fixed min/max Designer set.
         self._sidebar_animation.valueChanged.connect(
             lambda value: self.ui.sidebar.setFixedWidth(int(value))
         )
