@@ -158,10 +158,16 @@ p, li { white-space: pre-wrap; }
             </sizepolicy>
            </property>
            <property name="styleSheet">
-            <string notr="true">QLineEdit{	
-	background-color: rgb(159, 159, 159);
-	border: none;
-	border-radius: 20
+            <string notr="true">QLineEdit {
+    background-color: rgb(159, 159, 159);
+    border: 1px solid #D0D0D0;
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #2E2E33;
+}
+
+QLineEdit:focus {
+    border: 2px solid #E8A0B3;
 }</string>
            </property>
            <property name="placeholderText">
@@ -172,10 +178,16 @@ p, li { white-space: pre-wrap; }
          <item>
           <widget class="QLineEdit" name="password_txt">
            <property name="styleSheet">
-            <string notr="true">QLineEdit{	
-	background-color: rgb(159, 159, 159);
-	border: none;
-	border-radius: 20
+            <string notr="true">QLineEdit {
+    background-color:  rgb(159, 159, 159);
+    border: 1px solid #D0D0D0;
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #2E2E33;
+}
+
+QLineEdit:focus {
+    border: 2px solid #E8A0B3;
 }</string>
            </property>
            <property name="echoMode">
@@ -208,6 +220,31 @@ QPushButton:pressed {
            </property>
            <property name="text">
             <string>Login</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cancel_btn">
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 22px;
+}
+
+QPushButton:hover {
+    background-color: #666666;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+}</string>
+           </property>
+           <property name="text">
+            <string>Cancel</string>
            </property>
           </widget>
          </item>

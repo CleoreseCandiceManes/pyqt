@@ -325,7 +325,7 @@ QFrame#contentArea {
 }</string>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="dashboardPage">
           <property name="styleSheet">
@@ -398,20 +398,49 @@ QLabel {
             </spacer>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox">
-             <property name="title">
-              <string>Add Appointments</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QDateTimeEdit" name="dateTimeEdit"/>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="Client_name"/>
+            <layout class="QFormLayout" name="add_clients_form">
+             <item row="0" column="0">
+              <widget class="QLabel" name="appointmentdate">
+               <property name="text">
+                <string>Appointment Date</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QDateTimeEdit" name="dateTimeEdit"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="clientname">
+               <property name="text">
+                <string>Client Name</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QComboBox" name="client_name_combo"/>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QPushButton" name="add_appointment_btn">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 22px;
+}
+
+QPushButton:hover {
+    background-color: #666666;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+}</string>
+             </property>
              <property name="text">
               <string>Add Appointment</string>
              </property>
@@ -471,6 +500,50 @@ QLabel {
            </item>
            <item>
             <widget class="QCalendarWidget" name="calendarWidget"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="selected_date_label">
+             <property name="styleSheet">
+              <string notr="true">
+QLabel {
+    color: #2E2E33;
+    font-size: 16px;
+    font-weight: 600;
+}
+              </string>
+             </property>
+             <property name="text">
+              <string>Appointments on this date</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="day_appointments_table"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="add_appointment_on_date_btn">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 22px;
+}
+
+QPushButton:hover {
+    background-color: #666666;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+}</string>
+             </property>
+             <property name="text">
+              <string>Add Appointment on This Date</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="calendarSpacer">
@@ -533,6 +606,23 @@ QLabel {
             </widget>
            </item>
            <item>
+            <widget class="QTabWidget" name="Properties_Widget">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="ListedProperties">
+              <attribute name="title">
+               <string>Tab 1</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="AddPropety">
+              <attribute name="title">
+               <string>Tab 2</string>
+              </attribute>
+             </widget>
+            </widget>
+           </item>
+           <item>
             <spacer name="propertiesSpacer">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -588,22 +678,203 @@ QLabel {
               </string>
              </property>
              <property name="text">
-              <string>Add, view, and remove clients.</string>
+              <string>Add clients.</string>
              </property>
             </widget>
            </item>
            <item>
-            <spacer name="clientsSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+            <widget class="QTabWidget" name="tabWidget">
+             <property name="currentIndex">
+              <number>1</number>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
+             <widget class="QWidget" name="viewCients">
+              <attribute name="title">
+               <string>View Clients</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="viewClientsLayout">
+               <property name="leftMargin">
+                <number>33</number>
+               </property>
+               <property name="topMargin">
+                <number>33</number>
+               </property>
+               <property name="rightMargin">
+                <number>33</number>
+               </property>
+               <property name="bottomMargin">
+                <number>33</number>
+               </property>
+               <item>
+                <widget class="QTableWidget" name="client_list"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="add_client_tab">
+              <attribute name="title">
+               <string>Add Client</string>
+              </attribute>
+              <layout class="QFormLayout" name="add_client_form">
+               <property name="horizontalSpacing">
+                <number>33</number>
+               </property>
+               <property name="leftMargin">
+                <number>33</number>
+               </property>
+               <property name="topMargin">
+                <number>33</number>
+               </property>
+               <property name="rightMargin">
+                <number>33</number>
+               </property>
+               <property name="bottomMargin">
+                <number>33</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>First Name</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="first_name"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="lname">
+                 <property name="text">
+                  <string>Last Name</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="last_name"/>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="email">
+                 <property name="text">
+                  <string>Email Address</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="email_address"/>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="phone_nr_2">
+                 <property name="text">
+                  <string>Phone Number</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="phone_nr"/>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="text">
+                  <string>Type</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QComboBox" name="client_type"/>
+               </item>
+               <item row="5" column="0">
+                <widget class="QLabel" name="ownedProp">
+                 <property name="text">
+                  <string>Owned_property</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="1">
+                <widget class="QComboBox" name="owned_property"/>
+               </item>
+               <item row="6" column="0">
+                <widget class="QLabel" name="intrest">
+                 <property name="text">
+                  <string>Intrested property</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="1">
+                <widget class="QComboBox" name="interested_propery"/>
+               </item>
+               <item row="7" column="0">
+                <widget class="QLabel" name="notes_2">
+                 <property name="text">
+                  <string>Notes</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="1">
+                <widget class="QTextEdit" name="notes"/>
+               </item>
+               <item row="8" column="1">
+                <spacer name="verticalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="10" column="1">
+                <widget class="QPushButton" name="client_save_btn">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 22px;
+}
+
+QPushButton:hover {
+    background-color: #666666;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Save</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="11" column="1">
+                <widget class="QPushButton" name="client_cancel_btn">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 22px;
+}
+
+QPushButton:hover {
+    background-color: #666666;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Cancel</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
            </item>
           </layout>
          </widget>

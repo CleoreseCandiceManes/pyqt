@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<appointments>
+  <meeting id="20260903_gay">
+    <name>Yru Gay</name>
+    <appointment_date>03-09-2026</appointment_date>
+    <appointment_time>12:00</appointment_time>
+    <cancelled>true</cancelled>
+  </meeting>
+  <meeting id="20260914_lord">
+    <name>Bobford Lord</name>
+    <appointment_date>14-09-2026</appointment_date>
+    <appointment_time>12:00</appointment_time>
+    <cancelled>false</cancelled>
+  </meeting>
+  <meeting id="20260920_focker">
+    <name>Frilly Focker</name>
+    <appointment_date>20-09-2026</appointment_date>
+    <appointment_time>12:00</appointment_time>
+    <cancelled>false</cancelled>
+  </meeting>
+  <meeting id="20000101_cleorese">
+    <name>Cleorese Manes</name>
+    <appointment_date>01-01-2000</appointment_date>
+    <appointment_time>00:00</appointment_time>
+    <cancelled>false</cancelled>
+  </meeting>
+  <meeting id="20260914_focker">
+    <name>Frilly Focker</name>
+    <appointment_date>14-09-2026</appointment_date>
+    <appointment_time>09:15</appointment_time>
+    <cancelled>false</cancelled>
+  </meeting>
+</appointments>

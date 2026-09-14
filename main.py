@@ -6,9 +6,6 @@ from backend.login_be import LoginBE
 from lyt_realestate import Ui_Dialog
 from appointments_controller import AppointmentsWindow
 
-# Must be set before QApplication is constructed so Qt scales the UI to
-# match Windows display scaling (otherwise everything renders at its raw
-# pixel size and looks tiny on a high-DPI / scaled display).
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
 QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
@@ -22,14 +19,15 @@ def main():
 
     login_backend = LoginBE()
 
-    # Built up front and kept referenced for the life of main() so the window
-    # survives once control returns to the Qt event loop.
     appointments_window = AppointmentsWindow()
 
     def handle_login():
+        # load the enterted values into code and remove spaces before or after the text
         username = login_ui.username_txt.text().strip()
         password = login_ui.password_txt.text().strip()
 
+        # Run the function that will check the crendtials, 
+        #   if it returns true then dirrect user to the application or else display error message
         if login_backend.check_credentials(username, password):
             login_dialog.accept()
             appointments_window.show()
@@ -40,7 +38,13 @@ def main():
                 "Incorrect username or password.",
             )
 
+    #If the user presses the cancel button close the application
+    def handle_cancel():
+        login_dialog.reject()
+        app.quit()
+
     login_ui.login_btn.clicked.connect(handle_login)
+    login_ui.cancel_btn.clicked.connect(handle_cancel)
 
     login_dialog.show()
     sys.exit(app.exec_())

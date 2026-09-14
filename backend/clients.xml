@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<clients>
+  <client id="wru_gay">
+    <first_name>Yru</first_name>
+    <last_name>Gay</last_name>
+    <email_address>yrugay@gmail.com</email_address>
+    <phone_nr>0978652255</phone_nr>
+    <client_type>Seller</client_type>
+    <owned_property>265 Tambooti Street</owned_property>
+    <interested_property>N/A</interested_property>
+    <notes>The house is decrepit, not sure how we are going to sell it, luckly we don't have pictures of our properties yet or we'd be in trouble</notes>
+  </client>
+  <client id="bob_lord">
+    <first_name>Bobford</first_name>
+    <last_name>Lord</last_name>
+    <email_address>bodlor@gmail.com</email_address>
+    <phone_nr>0159414455</phone_nr>
+    <client_type>Buyer</client_type>
+    <owned_property>N/A</owned_property>
+    <interested_property>265 Tambooti Street</interested_property>
+    <notes>The man is broke, we could possibly sell the Gay property to him, but he wants a mansion on a shack budget</notes>
+  </client>
+  <client id="frilly_focker">
+    <first_name>Frilly</first_name>
+    <last_name>Focker</last_name>
+    <email_address>FockerFrilly@outlook.com</email_address>
+    <phone_nr>098745123</phone_nr>
+    <client_type>Seller</client_type>
+    <owned_property>999 Gicc Street</owned_property>
+    <interested_property>N/A</interested_property>
+    <notes>First big property, kinda nervous</notes>
+  </client>
+  <client id="cleorese_cleorese">
+    <first_name>Cleorese</first_name>
+    <last_name>Manes</last_name>
+    <email_address>21543038@mylife.unica.ac.za</email_address>
+    <phone_nr>0607978656</phone_nr>
+    <client_type>Buyer</client_type>
+    <owned_property>265 Tambooti Street</owned_property>
+    <interested_property>N/A</interested_property>
+    <notes>I too am broke and in need of a property, I'll take what I can get at this point, cloud isn't paying enough for anything bigger than a shoe box</notes>
+  </client>
+</clients>
